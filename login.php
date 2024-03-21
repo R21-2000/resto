@@ -3,20 +3,18 @@
 session_start();
 
 if (isset($_POST['login'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
+    $namauser = $_POST['namauser'];
 
   // koneksi database
   include_once 'koneksi.php';
 
-  $sql = "SELECT * FROM user WHERE username = '$username' AND password = '$password'";
+  $sql = "SELECT * FROM user WHERE Namauser = '$namauser'";
   $result = mysqli_query($conn, $sql);
 
-  // kalau usernya sudah ada role bisa langsung ke ghome masing masing
+  // kalau usernya sudah ada role bisa langsung ke home masing masing
   if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
-    $_SESSION['username'] = $username;
-    $_SESSION['role'] = $row['role'];
+    $_SESSION['namauser'] = $namauser;
 
     switch ($row['role']) {
       case 'admin':
@@ -32,10 +30,10 @@ if (isset($_POST['login'])) {
         header("Location: ownerhome.php");
         exit;
       default:
-        echo "<p style='color: red;'>Login gagal! Role tidak ditemukan.</p>";
+        echo "<p style='color: red;'>Duh anda siapa ya?.</p>";
     }
   } else {
-    echo "<p style='color: red;'>Login gagal! Username atau password salah.</p>";
+    echo "<p style='color: red;'>Typo bre</p>";
   }
 }
 
@@ -45,17 +43,13 @@ if (isset($_POST['login'])) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial_scale=1.0">
   <title>Login</title>
 </head>
 <body>
   <h1>Login</h1>
   <form method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <label for="namauser">Nama Pengguna:</label>  <input type="text" id="namauser" name="namauser" required>
     <br>
     <br>
     <button type="submit" name="login">Login</button>
