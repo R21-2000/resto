@@ -3,30 +3,30 @@
 session_start();
 
 if (isset($_POST['login'])) {
-    $namauser = $_POST['namauser'];
+  $namauser = $_POST['namauser'];
 
-  // koneksi database
+  // Connect to database
   include_once 'koneksi.php';
 
   $sql = "SELECT * FROM user WHERE Namauser = '$namauser'";
   $result = mysqli_query($conn, $sql);
 
-  // kalau usernya sudah ada role bisa langsung ke home masing masing
+  // Check user existence
   if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     $_SESSION['namauser'] = $namauser;
 
     switch ($row['role']) {
-      case 'admin':
+      case 'Admin':
         header("Location: adminhome.php");
-        exit;
-      case 'waiter':
+        exit; 
+      case 'Waiter':
         header("Location: waiterhome.php");
         exit;
-      case 'kasir':
+      case 'Kasir':
         header("Location: kasirhome.php");
         exit;
-      case 'owner':
+      case 'Owner':
         header("Location: ownerhome.php");
         exit;
       default:
@@ -49,7 +49,8 @@ if (isset($_POST['login'])) {
 <body>
   <h1>Login</h1>
   <form method="post">
-    <label for="namauser">Nama Pengguna:</label>  <input type="text" id="namauser" name="namauser" required>
+    <label for="namauser">Nama Pengguna:</label>
+    <input type="text" id="namauser" name="namauser" required>
     <br>
     <br>
     <button type="submit" name="login">Login</button>
